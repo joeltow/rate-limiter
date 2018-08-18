@@ -1,0 +1,28 @@
+{
+  "name": "rate-limiter",
+  "version": "1.0.0",
+  "description": "Limit the number of requests per requester",
+  "main": "app.js",
+  "scripts": {
+    "test": "jest",
+    "testwatch": "nodemon --exec \"npm test\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joeltow/rate-limiter.git"
+  },
+  "author": "joeltow",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/joeltow/rate-limiter/issues"
+  },
+  "homepage": "https://github.com/joeltow/rate-limiter#readme",
+  "devDependencies": {
+    "expect": "^23.5.0",
+    "jest": "^23.5.0",
+    "supertest": "^3.1.0"
+  },
+  "dependencies": {
+    "express": "^4.16.3"
+  }
+}
