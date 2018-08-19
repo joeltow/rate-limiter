@@ -2,9 +2,9 @@ const request = require('supertest');
 const expect = require('expect');
 
 let app = require('./server').app;
-const db = require('../db/db');
+const db = require('../rate-limiter/db/db');
 
-jest.mock('../db/db');
+jest.mock('../rate-limiter/db/db');
 
 describe('server', () => {
     describe('GET /', () => {

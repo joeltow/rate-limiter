@@ -1,19 +1,17 @@
 const express = require('express');
 
-const idrequester = require('../identify-requester/identify-requester');
-const logRequest = require('../log-request/log-request');
-const rateConfig = require('../rate-config/rate-config');
+const rateLimiter = require('../rate-limiter/rate-limiter');
 
 let app = express();
 
 app.get('/', async (req, res) => {
     let curTime = new Date(Date.now()).toISOString();
-    let requesterId = idrequester.getRequesterId(req);
+    let requesterId = rateLimiter.getRequesterId(req);
 
-    logRequest.logRequest(requesterId, curTime);
+    rateLimiter.logRequest(requesterId, curTime);
     let isRestricted = false;
     try {
-        isRestricted = await rateConfig.isRestricted(requesterId);
+        isRestricted = await rateLimiter.isRestricted(requesterId);
     } catch (err) {
         next(err);
     }

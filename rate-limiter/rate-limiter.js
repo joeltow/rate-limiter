@@ -1,14 +1,15 @@
-const db = require('../db/db');
+const db = require('./db/db');
+const idRequester = require('./identify-requester/identify-requester');
+const logRequest = require('./log-request/log-request');
 
 // Max number of requests per requester. Plan is for this to be configurable and loaded from the DB.
 let maxRequests = 100;
 
-// Period over which to restrict requests. Also configurable. Value in ms.
+// Period over which to restrict requests. Also planned to be configurable in the DB. Value in ms.
 let limitPeriod = 3600000;
 
 const getNumberOfRequests = async requesterId => {
     let earliestTime = new Date(Date.now() - limitPeriod).toISOString();
-    console.log(earliestTime);
     let res = await db.query('SELECT COUNT(*) FROM requestLog WHERE requestId = $1 AND timestamp > $2', [requesterId, earliestTime]);
     return res.rows[0].count;
 };
@@ -22,4 +23,12 @@ module.exports.getNumberOfRequests = getNumberOfRequests;
 module.exports.isRestricted = async requesterId => {
     let numberOfRequests = await getNumberOfRequests(requesterId);
     return numberOfRequests >= maxRequests;
+};
+
+module.exports.getRequesterId = req => {
+    return idRequester.getRequesterId(req);
+};
+
+module.exports.logRequest = async (requesterId, curTime) => {
+    return await logRequest.logRequest(requesterId, curTime);
 };
