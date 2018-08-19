@@ -17,6 +17,8 @@ Primary considerations:
     1. To run tests execute> **npm test**
     1. To run the express app execute> **node app.js**
 
+*server.js* shows how the rate-limiter module may be consumed.
+
 ## Highlevel approach
 The server should have a log of each request. If we identify the requester and log the time of the request, we can do a count of requests over a set time period to determine whether to accept the request or not.
 
