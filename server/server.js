@@ -1,20 +1,30 @@
 const express = require('express');
 
 const idrequester = require('../identify-requester/identify-requester');
+const logRequest = require('../log-request/log-request');
+const rateConfig = require('../rate-config/rate-config');
 
 let app = express();
 
-app.get('/', (req, res) => {
+app.get('/', async (req, res) => {
+    let curTime = new Date(Date.now()).toISOString();
     let requesterId = idrequester.getRequesterId(req);
-    console.log(`requesterId: ${requesterId}`);
 
-    // log request
-    // validate requester
+    logRequest.logRequest(requesterId, curTime);
+    let isRestricted = false;
+    try {
+        isRestricted = await rateConfig.isRestricted(requesterId);
+    } catch (err) {
+        next(err);
+    }
 
-    res.status(501).send({
-        error: 'Not yet implemented.',
-        name: 'rate-limiter'
-    });
+    if (isRestricted){
+        res.status(429).send({
+            error: 'Thank you for your dedication to our platform, but you may have the wrong address. Perhaps you will have more success with freelancer.com?'
+        })
+    } else {
+        res.send('Thanks for coming! Hope you found what you were looking for.');
+    }
 });
 
 app.listen(3000);

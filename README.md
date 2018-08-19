@@ -5,10 +5,23 @@ Assuming the purpose of this rate-limiter is to prevent malicious use of the pla
 
 Primary considerations:
 * Should be invisible to the user and not impede their experience - must introduce minimal latency.
+    * Every API request will feature this check so it should also be nicely modular for easy maintenance and reuse.
 * Should be suitable for 100s of millions of requesters.
 
-### Basic approach
+## Highlevel approach
 The server should have a log of each request. If we identify the requester and log the time of the request, we can do a count of requests over a set time period to determine whether to accept the request or not.
-This solution [plans] to use PostgreSQL as a datastore mostly because I want to try out AWS Aurora PostgreSQL. The requesterId and timestamp must be indexed to increase the speed of the query.
 
-The plan is to have an API Gateway as an entry point with a lambda serving the request. The lambda will include a module to log requests to PostgreSQL and restrict access as required.
+### Persistent storage
+The plan is to use *PostgreSQL* as a datastore mostly because I want to try out AWS Aurora PostgreSQL (future). The requesterId and timestamp must be indexed to increase the speed of the query.
+
+### Infrastructure
+The (future) plan is to have an *API Gateway* as an entry point with a *lambda* serving the request. The *lambda* will include a module to log requests to PostgreSQL and restrict access as required.
+
+## Future considerations
+### Indentifying the requester
+Using data provided as part of the request is only going to catch amateurs. Using the client ip will only take us so far, but is a simple starting point. Given that requests from enterprise users will often originate from the same public ip, this solution may prematurely block a whole segment of users. The implementation is extensible.
+
+*Further investigation required*.
+
+### rate-limiter as an NPM module
+Ideally the rate-limiter should be deployed as a NPM module so that it can be properly versioned and tracked. It would be a great module to open source. The challenge there would either be in standardizing on a datastore or opening up interfaces to popular choices.

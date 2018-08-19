@@ -2,15 +2,34 @@ const request = require('supertest');
 const expect = require('expect');
 
 let app = require('./server').app;
+const db = require('../db/db');
+
+jest.mock('../db/db');
 
 describe('server', () => {
     describe('GET /', () => {
-        it('should return 501', (done) => {
+        it('should return success', (done) => {
+            const resp = {rows: [{count: 53}]};
+            db.query.mockResolvedValue(resp);
+
             request(app)
                 .get('/')
-                .expect(501)
+                .expect(200)
                 .expect(res => {
-                    expect(res.body).toHaveProperty('error', 'Not yet implemented.');
+                    expect(res.text).toBe('Thanks for coming! Hope you found what you were looking for.');
+                })
+                .end(done);
+        });
+
+        it('should block access', (done) => {
+            const resp = {rows: [{count: 101}]};
+            db.query.mockResolvedValue(resp);
+
+            request(app)
+                .get('/')
+                .expect(429)
+                .expect(res => {
+                    expect(res.body).toHaveProperty('error', 'Thank you for your dedication to our platform, but you may have the wrong address. Perhaps you will have more success with freelancer.com?');
                 })
                 .end(done);
         });

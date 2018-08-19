@@ -22,10 +22,4 @@ describe('Requester', () => {
             expect(res).toBe('54.189.23.72');
         });
     });
-
-    // it('should square a number', () => {
-    //     let res = utils.square(3);
-    
-    //     expect(res).toBe(9);
-    // });
 });
