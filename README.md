@@ -8,6 +8,15 @@ Primary considerations:
     * Every API request will feature this check so it should also be nicely modular for easy maintenance and reuse.
 * Should be suitable for 100s of millions of requesters.
 
+## Instructions
+1. Install PostgreSQL
+    * Create table and index, details in *log-request.js*
+1. In the console (I used Powershell on Windows)
+    1. Setup Postgres environment variables tailored to your deployment, details in *db.js*
+    1. Execute> **npm install**
+    1. To run tests execute> **npm test**
+    1. To run the express app execute> **node app.js**
+
 ## Highlevel approach
 The server should have a log of each request. If we identify the requester and log the time of the request, we can do a count of requests over a set time period to determine whether to accept the request or not.
 
