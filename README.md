@@ -1,7 +1,7 @@
 # rate-limiter
 ### Limit the number of requests per requester
 
-Assuming the purpose of this rate-limiter is to prevent malicious use of the platform.
+Assumption: the purpose of this rate-limiter is to prevent malicious use of the platform.
 
 Primary considerations:
 * Should be invisible to the user and not impede their experience - must introduce minimal latency.
