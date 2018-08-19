@@ -6,6 +6,9 @@ Manually create table:
 	    requestId VARCHAR (355) NOT NULL,
 	    timestamp TIMESTAMPTZ NOT NULL
     );
+
+    CREATE INDEX countRequest_index
+    ON requestLog (requestId, timestamp);
 */
 
 module.exports.logRequest = async (requesterId, curTime) => {

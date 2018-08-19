@@ -14,4 +14,5 @@ PGPASSWORD=[pword]
 PGPORT=5432
 
 In PowerShell> $Env:PGUSER = "postgres"
+...
 */
